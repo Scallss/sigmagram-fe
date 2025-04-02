@@ -21,15 +21,12 @@ const CreatePostForm: React.FC<CreatePostFormProps> = ({ onPostCreated, communit
   useEffect(() => {
     const fetchFollowedCommunities = async () => {
       try {
-        // Fetch only communities that the user follows
         const response = await api.get('/communities/followed');
         setCommunities(response.data);
         
-        // Set initial community selection if communities are available and no communityId was provided
         if (response.data.length > 0 && !communityId) {
           setFormData(prev => ({ ...prev, communityId: response.data[0].id }));
         } else if (communityId) {
-          // If communityId was provided (from a community page), use that
           setFormData(prev => ({ ...prev, communityId }));
         }
       } catch (error) {
