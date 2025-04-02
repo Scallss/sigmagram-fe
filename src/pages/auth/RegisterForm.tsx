@@ -1,4 +1,3 @@
-// src/components/Auth/RegisterForm.tsx
 import React, { useState } from 'react';
 import { useAuth } from '../../hooks/useAuth';
 import { AuthData } from '../../types';

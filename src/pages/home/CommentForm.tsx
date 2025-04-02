@@ -1,4 +1,3 @@
-// src/components/Home/CommentForm.tsx
 import React, { useState } from 'react';
 import api from '../../api/axiosConfig';
 

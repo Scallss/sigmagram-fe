@@ -1,4 +1,3 @@
-// src/components/Communities/CreateCommunityForm.tsx
 import React, { useState } from 'react';
 import api from '../../api/axiosConfig';
 import { CreateCommunityData } from '../../types';

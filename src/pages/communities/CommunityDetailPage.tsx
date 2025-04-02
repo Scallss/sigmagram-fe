@@ -1,4 +1,3 @@
-// src/pages/CommunityDetailPage.tsx
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import api from '../../api/axiosConfig';
@@ -18,7 +17,6 @@ const CommunityDetailPage: React.FC = () => {
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [refreshKey, setRefreshKey] = useState(0);
 
-  // Fetch community details only
   useEffect(() => {
     const fetchCommunity = async () => {
       if (!id) return;
@@ -59,7 +57,6 @@ const CommunityDetailPage: React.FC = () => {
 
   const handlePostCreated = () => {
     setShowCreateForm(false);
-    // Increment refreshKey to trigger a re-fetch in PostsList
     setRefreshKey(prev => prev + 1);
   };
 

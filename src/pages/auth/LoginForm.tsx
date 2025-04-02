@@ -1,4 +1,3 @@
-// src/components/Auth/LoginForm.tsx
 import React, { useState } from 'react';
 import { useAuth } from '../../hooks/useAuth';
 import { AuthData } from '../../types';
@@ -26,7 +25,6 @@ const LoginForm: React.FC = () => {
 
     try {
       await login(formData);
-      // Successful login will be handled by the context
     } catch (err: any) {
       setError(err.response?.data?.message || 'Login failed');
     } finally {

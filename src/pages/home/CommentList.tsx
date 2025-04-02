@@ -1,4 +1,3 @@
-// src/components/Home/CommentList.tsx
 import React, { useEffect, useState, useCallback } from 'react';
 import api from '../../api/axiosConfig';
 import { Comment } from '../../types';
@@ -6,7 +5,7 @@ import { useAuth } from '../../hooks/useAuth';
 
 interface CommentListProps {
   postId: string;
-  refreshTrigger?: number; // Add this prop to force refresh
+  refreshTrigger?: number;
 }
 
 const CommentList: React.FC<CommentListProps> = ({ postId, refreshTrigger = 0 }) => {
@@ -30,7 +29,6 @@ const CommentList: React.FC<CommentListProps> = ({ postId, refreshTrigger = 0 })
     }
   }, [postId]);
 
-  // Fetch comments on mount and when postId or refreshTrigger changes
   useEffect(() => {
     fetchComments();
   }, [fetchComments, refreshTrigger]);
@@ -52,7 +50,6 @@ const CommentList: React.FC<CommentListProps> = ({ postId, refreshTrigger = 0 })
     
     try {
       await api.patch(`/comments/${commentId}`, { content: editContent });
-      // Update the comment in the local state
       setComments(comments.map(comment => 
         comment.id === commentId ? { ...comment, content: editContent } : comment
       ));

@@ -1,4 +1,3 @@
-// src/components/Home/PostCard.tsx
 import React, { useState } from 'react';
 import { Post } from '../../types';
 import api from '../../api/axiosConfig';
@@ -41,10 +40,8 @@ const PostCard: React.FC<PostCardProps> = ({ post, onDeletePost, onUpdatePost })
   };
 
   const handleCommentAdded = () => {
-    // Increment the counter to trigger a refresh
     setCommentRefreshCounter(prev => prev + 1);
-    
-    // Also update the comment count in the UI
+
     post.commentsCount = (post.commentsCount || 0) + 1;
   };
 
@@ -67,7 +64,6 @@ const PostCard: React.FC<PostCardProps> = ({ post, onDeletePost, onUpdatePost })
     const currentTime = new Date().getTime();
     const timeDifferenceMinutes = (currentTime - creationTime) / (1000 * 60);
     
-    // Return true if less than 30 minutes have passed
     return timeDifferenceMinutes < 30;
   };
 
@@ -75,7 +71,7 @@ const PostCard: React.FC<PostCardProps> = ({ post, onDeletePost, onUpdatePost })
     try {
       await api.patch(`/posts/${post.id}`, { 
         content: editedContent,
-        photo: editedPhoto || undefined // Only send if not empty
+        photo: editedPhoto || undefined
       });
       setIsEditing(false);
       if (onUpdatePost) onUpdatePost(post.id, editedContent, editedPhoto);

@@ -8,7 +8,6 @@ const HomePage: React.FC = () => {
   const [refreshKey, setRefreshKey] = useState(0);
 
   const handlePostCreated = () => {
-    // Force refresh of the posts list
     setRefreshKey(prev => prev + 1);
     setShowCreateForm(false);
   };

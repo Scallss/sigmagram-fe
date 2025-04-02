@@ -1,4 +1,3 @@
-// src/components/Communities/EditCommunityForm.tsx
 import React, { useState, useEffect } from 'react';
 import api from '../../api/axiosConfig';
 import { Community } from '../../types';
@@ -27,7 +26,6 @@ const EditCommunityForm: React.FC = () => {
         const response = await api.get<Community>(`/communities/${id}`);
         const community = response.data;
         
-        // Check if user is the creator of the community
         if (user?.id !== community.creatorId) {
           setNotAuthorized(true);
           return;

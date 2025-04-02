@@ -38,13 +38,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         if (response.data) {
           // User is authenticated, set the user data
           setUser(response.data);
-          // Optionally update localStorage for non-sensitive data
-          localStorage.setItem('user', JSON.stringify(response.data));
         }
       } catch (error) {
         console.error('Auth check error:', error);
-        // Clear any stale data if authentication fails
-        localStorage.removeItem('user');
+        // Authentication failed, clear user data
         setUser(null);
       } finally {
         setIsLoading(false);
@@ -60,7 +57,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       // After login, fetch the user data from /auth/me
       const userResponse = await api.get('/auth/me');
       setUser(userResponse.data);
-      localStorage.setItem('user', JSON.stringify(userResponse.data));
     } catch (error) {
       console.error('Login error:', error);
       throw error;
@@ -81,7 +77,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const logout = async () => {
     try {
       await api.post('/auth/logout');
-      localStorage.removeItem('user');
       setUser(null);
     } catch (error) {
       console.error('Logout error:', error);

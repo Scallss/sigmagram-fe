@@ -1,4 +1,3 @@
-// src/components/Posts/CreatePostForm.tsx
 import React, { useState, useEffect } from 'react';
 import api from '../../api/axiosConfig';
 import { Community, CreatePostData } from '../../types';
@@ -24,7 +23,6 @@ const CreatePostForm: React.FC<CreatePostFormProps> = ({ onPostCreated }) => {
       try {
         const response = await api.get('/communities');
         setCommunities(response.data);
-        // Set default community if available
         if (response.data.length > 0) {
           setFormData(prev => ({ ...prev, communityId: response.data[0].id }));
         }
@@ -54,7 +52,7 @@ const CreatePostForm: React.FC<CreatePostFormProps> = ({ onPostCreated }) => {
       setFormData({
         content: '',
         photo: '',
-        communityId: formData.communityId, // Keep the selected community
+        communityId: formData.communityId, 
       });
       setSuccess(true);
       if (onPostCreated) onPostCreated();

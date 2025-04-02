@@ -1,4 +1,3 @@
-// src/components/Home/PostsList.tsx
 import React, { useEffect, useState } from 'react';
 import api from '../../api/axiosConfig';
 import { Post } from '../../types';
@@ -28,14 +27,12 @@ const PostsList: React.FC<PostsListProps> = ({
     try {
       const loadingState = isInitialLoad ? setIsLoading : setIsLoadingMore;
       loadingState(true);
-      
-      // Build the query string with optional communityId filter
+
       let queryString = `skip=${skipValue}`;
       if (communityId) queryString += `&communityId=${communityId}`;
       
       const response = await api.get(`/posts?${queryString}`);
       
-      // Check if we've reached the end of the posts
       if (response.data.length === 0) {
         setHasMorePosts(false);
       } else {
@@ -52,14 +49,12 @@ const PostsList: React.FC<PostsListProps> = ({
     }
   };
 
-  // Reset posts when refreshKey or communityId changes
   useEffect(() => {
     setSkip(0);
     setHasMorePosts(true);
     fetchPosts(0, true);
   }, [communityId, refreshKey]);
 
-  // Fetch more posts when skip changes (except on initial load)
   useEffect(() => {
     if (skip > 0) {
       fetchPosts(skip, false);
@@ -67,7 +62,7 @@ const PostsList: React.FC<PostsListProps> = ({
   }, [skip]);
 
   const loadMore = () => {
-    setSkip((prevSkip) => prevSkip + 5); // Load 5 more posts
+    setSkip((prevSkip) => prevSkip + 5); 
   };
 
   const handleDeletePost = (postId: string) => {
