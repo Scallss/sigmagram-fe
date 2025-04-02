@@ -7,11 +7,11 @@ interface CreatePostFormProps {
   communityId?: string;
 }
 
-const CreatePostForm: React.FC<CreatePostFormProps> = ({ onPostCreated }) => {
+const CreatePostForm: React.FC<CreatePostFormProps> = ({ onPostCreated, communityId }) => {
   const [formData, setFormData] = useState<CreatePostData>({
     content: '',
     photo: '',
-    communityId: '',
+    communityId: communityId || '',
   });
   const [communities, setCommunities] = useState<Community[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -19,20 +19,27 @@ const CreatePostForm: React.FC<CreatePostFormProps> = ({ onPostCreated }) => {
   const [success, setSuccess] = useState(false);
 
   useEffect(() => {
-    const fetchCommunities = async () => {
+    const fetchFollowedCommunities = async () => {
       try {
-        const response = await api.get('/communities');
+        // Fetch only communities that the user follows
+        const response = await api.get('/communities/followed');
         setCommunities(response.data);
-        if (response.data.length > 0) {
+        
+        // Set initial community selection if communities are available and no communityId was provided
+        if (response.data.length > 0 && !communityId) {
           setFormData(prev => ({ ...prev, communityId: response.data[0].id }));
+        } else if (communityId) {
+          // If communityId was provided (from a community page), use that
+          setFormData(prev => ({ ...prev, communityId }));
         }
       } catch (error) {
-        console.error('Error fetching communities:', error);
+        console.error('Error fetching followed communities:', error);
+        setError('Failed to load communities you follow. Please try again.');
       }
     };
 
-    fetchCommunities();
-  }, []);
+    fetchFollowedCommunities();
+  }, [communityId]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -72,20 +79,26 @@ const CreatePostForm: React.FC<CreatePostFormProps> = ({ onPostCreated }) => {
       
       <div className="form-group">
         <label htmlFor="communityId">Select Community</label>
-        <select
-          id="communityId"
-          name="communityId"
-          value={formData.communityId}
-          onChange={handleChange}
-          required
-        >
-          <option value="" disabled>Select a community</option>
-          {communities.map(community => (
-            <option key={community.id} value={community.id}>
-              {community.category}
-            </option>
-          ))}
-        </select>
+        {communities.length === 0 ? (
+          <div className="no-communities-warning">
+            Loading communities... Please follow some communities to create a post.
+          </div>
+        ) : (
+          <select
+            id="communityId"
+            name="communityId"
+            value={formData.communityId}
+            onChange={handleChange}
+            required
+          >
+            <option value="" disabled>Select a community</option>
+            {communities.map(community => (
+              <option key={community.id} value={community.id}>
+                {community.category}
+              </option>
+            ))}
+          </select>
+        )}
       </div>
       
       <div className="form-group">
@@ -112,7 +125,10 @@ const CreatePostForm: React.FC<CreatePostFormProps> = ({ onPostCreated }) => {
         />
       </div>
       
-      <button type="submit" disabled={isSubmitting || !formData.content || !formData.communityId}>
+      <button 
+        type="submit" 
+        disabled={isSubmitting || !formData.content || !formData.communityId || communities.length === 0}
+      >
         {isSubmitting ? 'Creating...' : 'Create Post'}
       </button>
     </form>
