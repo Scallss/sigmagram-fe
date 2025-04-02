@@ -51,7 +51,7 @@ const CommentList: React.FC<CommentListProps> = ({ postId, refreshTrigger = 0 })
     }
     
     try {
-      const response = await api.patch(`/comments/${commentId}`, { content: editContent });
+      await api.patch(`/comments/${commentId}`, { content: editContent });
       // Update the comment in the local state
       setComments(comments.map(comment => 
         comment.id === commentId ? { ...comment, content: editContent } : comment
